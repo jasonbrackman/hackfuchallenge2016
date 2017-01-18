@@ -20,18 +20,35 @@ DJKKzTcqVRD+vZWTbS6paytmAwl0ikViZfqVXgJZTUaB3J4jrddIFtQ2B+6hWvv2
 SUOm1L6o1tkZ17iH105IXCe6BFNcTBe/i8rcSQkS7c2pZDY4AWmf32DaP7hhmg6z"""
 
 message = binascii.a2b_base64(message)
-key = 'hackfuchallenge2016'
 
-cmd = f'openssl enc -d -base64 -aes-256-cbc -salt -in ./hackfu2016/00.aes -k {key}'.split()
-p = Popen(cmd, stdin=PIPE, stdout=PIPE)
-out, err = p.communicate(message)
-print(out)
 
-#  This revealed the new key for the zip file -- already unlocked so the following is commented out
-#
-# key = "thedesolatewastelandawaitsyourarrival"
-# cmd = f'openssl enc -d -base64 -aes-256-cbc -salt -in ./hackfu2016/container.zip.aes -out ./hackfu2016/container.zip -k {key}'.split()
-# p = Popen(cmd, stdin=PIPE, stdout=PIPE)
-# out, err = p.communicate()
-# print(out)
+def decrypt_openssl(infile=None, outfile=None, passphrase=None):
+
+    cmd = f'openssl enc -d -base64 -aes-256-cbc -salt'.split()
+
+    if infile:
+        cmd += ['-in', infile]
+
+    if outfile:
+        cmd += ['-out', outfile]
+
+    cmd += ['-k', passphrase]
+
+    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    out, err = p.communicate()
+
+    return out, err
+
+if __name__ == "__main__":
+    key = 'hackfuchallenge2016'
+    filein = './hackfu2016/00.aes'
+    print(decrypt_openssl(infile=filein, passphrase=key))
+
+    #  This revealed the new key for the zip file -- already unlocked so the following is commented out
+    #
+    # key = "thedesolatewastelandawaitsyourarrival"
+    # cmd = f'openssl enc -d -base64 -aes-256-cbc -salt -in ./hackfu2016/container.zip.aes -out ./hackfu2016/container.zip -k {key}'.split()
+    # p = Popen(cmd, stdin=PIPE, stdout=PIPE)
+    # out, err = p.communicate()
+    # print(out)
 
