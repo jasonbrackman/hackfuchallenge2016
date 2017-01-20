@@ -43,8 +43,6 @@ def create_image(new_data, mode, size, index):
 
 def generate_images_for_each_value():
     im = Image.open('./hackfu2016/container/challenge 2/image')
-    get_image_info(im)
-
     for index in range(255):
         new_data = get_new_data(im, index)
         create_image(new_data, im.mode, (840, 840), index)
