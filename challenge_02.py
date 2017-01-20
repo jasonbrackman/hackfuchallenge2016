@@ -93,7 +93,7 @@ def generate_images_for_each_value():
 
 def combine_images(path):
     even = None
-    odd = None
+    # odd = None
     files = os.listdir(path)
     for file in files:
         file, ext = os.path.splitext(file)
@@ -106,19 +106,20 @@ def combine_images(path):
                 even = new_image
             else:
                 even = ImageChops.add_modulo(even, new_image)
-        else:
-            if odd is None:
-                odd = new_image
-            else:
-                odd = ImageChops.add_modulo(odd, new_image)
+        # else:
+        #     if odd is None:
+        #         odd = new_image
+        #     else:
+        #         odd = ImageChops.add_modulo(odd, new_image)
 
     even.save('even.bmp')
-    odd.save('odd.bmp')
+    # odd.save('odd.bmp')
 
 
 if __name__ == "__main__":
     passphrase = 'theleastsignificantisthemostsignificant'
     print(challenge_00.decrypt_openssl('./hackfu2016/container/challenge 2/solution.txt.enc',
+                                       './challenge_02_output/solution.txt',
                                        passphrase=passphrase))
     pass
     # generate_images_for_each_value()
