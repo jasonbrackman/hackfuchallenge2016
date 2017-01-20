@@ -1,6 +1,7 @@
 # feels like a stenography challenge
 # Its an L Mode image - (8-bit pixels, black and white)
 # The text in the image (without doing anything appears to say 'lo filter sim' or 'co filter sim')
+# --> note that it might actually be 'lo filter s1m': s1m is something i've seen mentioned alongside RSA
 # there is also a #2 on the top of the forehead of the mask/filter
 # --> maybe I need to do a filter on the image?
 # --> low pass filter is a blurring operation.
@@ -11,28 +12,10 @@
 #   possible countermeasure is to use error correction codes or to hide data in more than one
 #   location. """
 #
+
 import os
-from collections import Counter
-from PIL import Image, ImageFilter, ImageChops, ImageOps
+from PIL import Image, ImageChops
 import challenge_00
-
-
-def get_image_info(im):
-    print(im.histogram())
-    print('bands: ', im.getbands())
-    for item in im.__dict__:
-        print(item, getattr(im, item))
-    width, height = im.size
-    pixel_values = list(im.getdata())
-    count = Counter(pixel_values)
-    print(count.most_common(5))
-    for y in range(0, height):  # each pixel has coordinates
-        row = ""
-        for x in range(0, width):
-            RGB = im.getpixel((x, y))
-            # print(RGB)
-            # R, G, B = RGB  # now you can use the RGB value
-            # print(R)
 
 
 def get_new_data(im, value):
@@ -56,30 +39,6 @@ def create_image(new_data, mode, size, index):
     im = Image.new(mode, size)
     im.putdata(new_data)
     im.save('img_{0:03d}.bmp'.format(index))
-
-
-def gaussian_filter(im, ammount):
-
-    #im2 = im.filter(ImageFilter.GaussianBlur(radius=ammount))
-    im2 = ImageOps.unsharp_mask(im, ammount)
-    im3 = ImageOps.box_blur(im, ammount)
-    #im4 = ImageChops.add(im3, im2)
-
-    # im2 = ImageOps.invert(im2)
-    im3.show()
-
-    # for index in range(0, 1000, 1000):
-    #     #im2 = im.filter(ImageFilter.UnsharpMask(radius=2, percent=index, threshold=6))
-    #     im2 = im.filter(ImageFilter.FIND_EDGES)
-    #     im2.show()
-
-    # im3 = ImageChops.add(, guassian)
-
-
-    #im1 = im.filter(ImageFilter.BLUR)
-    #im2 = im.filter(ImageFilter.MinFilter(3))
-    #im3 = im.filter(ImageFilter.MinFilter)  # same as MinFilter(3)
-    #im3.show()
 
 
 def generate_images_for_each_value():
@@ -106,14 +65,8 @@ def combine_images(path):
                 even = new_image
             else:
                 even = ImageChops.add_modulo(even, new_image)
-        # else:
-        #     if odd is None:
-        #         odd = new_image
-        #     else:
-        #         odd = ImageChops.add_modulo(odd, new_image)
 
     even.save('even.bmp')
-    # odd.save('odd.bmp')
 
 
 if __name__ == "__main__":
