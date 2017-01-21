@@ -24,7 +24,7 @@ message = binascii.a2b_base64(message)
 
 def decrypt_openssl(infile=None, outfile=None, passphrase=None):
 
-    cmd = f'openssl enc -d -base64 -aes-256-cbc -salt'.split()
+    cmd = 'openssl enc -d -base64 -aes-256-cbc -salt'.split()
 
     if infile:
         cmd += ['-in', infile]

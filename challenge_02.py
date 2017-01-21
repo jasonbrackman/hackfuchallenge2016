@@ -50,7 +50,6 @@ def generate_images_for_each_value():
 
 def combine_images(path):
     even = None
-    # odd = None
     files = os.listdir(path)
     for file in files:
         file, ext = os.path.splitext(file)
