@@ -13,7 +13,6 @@
 #   location. """
 #
 
-import os
 from PIL import Image, ImageChops
 import challenge_00
 
@@ -35,42 +34,32 @@ def get_new_data(im, value):
     return new_data
 
 
-def create_image(new_data, mode, size, index):
-    im = Image.new(mode, size)
-    im.putdata(new_data)
-    im.save('img_{0:03d}.bmp'.format(index))
-
-
-def generate_images_for_each_value():
+def combine_images_for_every_second_value():
     im = Image.open('./hackfu2016/container/challenge 2/image')
+
+    even_image = None
+
     for index in range(255):
-        new_data = get_new_data(im, index)
-        create_image(new_data, im.mode, (840, 840), index)
+        if index % 2 == 0:
+            new_data = get_new_data(im, index)
+            temp_im = Image.new(im.mode, im.size)
+            temp_im.putdata(new_data)
 
-
-def combine_images(path):
-    even = None
-    files = os.listdir(path)
-    for file in files:
-        file, ext = os.path.splitext(file)
-        value = int(file.split('_')[1])
-
-        new_image = Image.open(os.path.join(path, file + '.bmp'))
-
-        if value % 2 == 0:
-            if even is None:
-                even = new_image
+            if even_image is None:
+                even_image = temp_im
             else:
-                even = ImageChops.add_modulo(even, new_image)
+                even_image = ImageChops.add_modulo(even_image, temp_im)
 
-    even.save('even.bmp')
+    return even_image
 
 
 if __name__ == "__main__":
+    image = combine_images_for_every_second_value()
+    image.save('even.bmp')
+
+    # used an online service to read the QR code
     passphrase = 'theleastsignificantisthemostsignificant'
+
     print(challenge_00.decrypt_openssl('./hackfu2016/container/challenge 2/solution.txt.enc',
                                        './challenge_02_output/solution.txt',
                                        passphrase=passphrase))
-    pass
-    # generate_images_for_each_value()
-    # combine_images('./images_per_pixel_value')
