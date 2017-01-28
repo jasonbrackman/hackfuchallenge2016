@@ -93,9 +93,7 @@ if __name__ == "__main__":
         for index, line in enumerate(handle):
             if index == 4:
                 print(line)
-                for item in line:
-                    print(item)
-                #print(line.decode())
+                print(line.decode())
                 #align_frequency_of_text_to_english_distribution(line.decode())
                 #stuff = [item for index, item in enumerate(line) if not index % 2 == 0]
 
