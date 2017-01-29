@@ -1,13 +1,14 @@
 # coding=utf-8
-# - compressed so unlike #2 pixle accuracy is not likely :)
+# - compressed so unlike #2 pixel accuracy is not likely :)
 # -
 # - Looks like a puzzle that needs to be rotated?
 # Creation Date: 1/28/2017
 #
 # --------------------------------------------------------------------------------------
 
-from PIL import Image, ImageOps, ImageChops
+from PIL import Image, ImageOps
 import challenge_00
+
 
 def step_rotate_inner_dimensions(image, border):
 
@@ -15,15 +16,9 @@ def step_rotate_inner_dimensions(image, border):
         value = border*index
         if value < image.size[0]:
             region = ImageOps.crop(image, border=value)
-
-            if index % 80 == 0:
-                region = region.transpose(Image.ROTATE_270)
-            else:
-                region = region.transpose(Image.ROTATE_90)
-
+            region = region.transpose(Image.ROTATE_90)
             image.paste(region, (value, value))
 
-    image = image.transpose(Image.ROTATE_180)
     return image
 
 if __name__ == "__main__":

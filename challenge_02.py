@@ -55,7 +55,7 @@ def combine_images_for_every_second_value():
 
 if __name__ == "__main__":
     image = combine_images_for_every_second_value()
-    image.save('even.bmp')
+    image.save('./challenge_02_output/even.bmp')
 
     # used an online service to read the QR code
     passphrase = 'theleastsignificantisthemostsignificant'

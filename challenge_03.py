@@ -10,8 +10,8 @@ import codecs
 from PIL import Image, ImageFilter, ImageChops, ImageOps
 
 
-def create_luminance_image_from_pixel_values(pixels, scale=64):
-    im = Image.new("L", (scale, scale))
+def create_luminance_image_from_pixel_values(pixels, scale=(64, 64)):
+    im = Image.new("L", scale)
     im.putdata(pixels)
     im.show()
 
@@ -95,12 +95,23 @@ if __name__ == "__main__":
                 print(line)
                 print(line.decode())
                 #align_frequency_of_text_to_english_distribution(line.decode())
-                #stuff = [item for index, item in enumerate(line) if not index % 2 == 0]
+                stuff = [item for index, item in enumerate(line) if not index % 2 == 0]
+                import gzip
+                from io import BytesIO
+                buf = BytesIO(line)
+                f = gzip.GzipFile(fileobj=buf).read()
+                print(f)
 
     # is it a rotated cypher based on the signed/unsigned number?
-    # print_rotated_text(stuff)
+    print_rotated_text(stuff)
 
-    # pixels = [convert_to_signed(item) for item in stuff]
-    # create_luminance_image_from_pixel_values(pixels)
-    # create_luminance_image_from_pixel_values(stuff)
+    pixels = [convert_to_signed(item) for item in stuff]
+    # create_luminance_image_from_pixel_values(pixels, scale=(128, 32))
+    print(max(stuff))
+    print(min(stuff))
+    for index, item in enumerate(stuff):
+        if max(stuff) == item:
+            print(index, item)
+    create_luminance_image_from_pixel_values(stuff, scale=(20, 210))
+
 
