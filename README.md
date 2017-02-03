@@ -1,5 +1,7 @@
 # hackfuchallenge2016
-challenges and (hopefully) solutions related to the hackfuchallenge2016
+challenges and (hopefully) solutions related to the hackfuchallenge2016:
+
+https://hackfu.mwrinfosecurity.com/hackfu-2016/hackfu-challenge/
 
 Challenges Being Worked on / Completed
 - 00 - Completed - Show competency using OpenSSL
