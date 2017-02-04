@@ -2,6 +2,10 @@
 #
 # - signed char from -128 to 127, and unsigned char from 0 to 255.
 # - maybe we need to some frequency analysis? https://en.wikipedia.org/wiki/Frequency_analysis
+# - \xc3 is repeated all over the place
+# = \xc2 seems fairly common too
+# - Is this 16byte blocks?
+
 #
 
 import math
@@ -30,7 +34,7 @@ def convert_to_signed(value):
 
 
 def print_rotated_text(text):
-    for index in range(150, 223):
+    for index in range(221, 222):
         try:
             chars = [chr(twos_complement(item, 8) + index) for item in text]
             print(index, ': ', ''.join(chars), end='\n')
@@ -68,8 +72,8 @@ def align_frequency_of_text_to_english_distribution(text):
     english = list(letters.keys())
     crypted = list(encrypt.keys())
 
-    print(len(english))
-    print(len(crypted))
+    # print(len(english))
+    # print(len(crypted))
 
     for x in range(1):
         result = list()
@@ -92,26 +96,32 @@ if __name__ == "__main__":
     with codecs.open(r'./hackfu2016/container/challenge 3/instructions.txt', 'rb') as handle:
         for index, line in enumerate(handle):
             if index == 4:
-                print(line)
                 print(line.decode())
-                #align_frequency_of_text_to_english_distribution(line.decode())
-                stuff = [item for index, item in enumerate(line) if not index % 2 == 0]
-                import gzip
-                from io import BytesIO
-                buf = BytesIO(line)
-                f = gzip.GzipFile(fileobj=buf).read()
-                print(f)
-
-    # is it a rotated cypher based on the signed/unsigned number?
-    print_rotated_text(stuff)
-
-    pixels = [convert_to_signed(item) for item in stuff]
-    # create_luminance_image_from_pixel_values(pixels, scale=(128, 32))
-    print(max(stuff))
-    print(min(stuff))
-    for index, item in enumerate(stuff):
-        if max(stuff) == item:
-            print(index, item)
-    create_luminance_image_from_pixel_values(stuff, scale=(20, 210))
-
-
+                for index in range(0, len(line), 16):
+                    block = line[index:index+16]
+                    # print(block)
+                    #align_frequency_of_text_to_english_distribution(block.decode())
+                    print_rotated_text(block)
+                    # 1/0
+    #             print(line.decode())
+    #             #align_frequency_of_text_to_english_distribution(line.decode())
+    #             stuff = [item for index, item in enumerate(line) if not index % 2 == 0]
+    #             import gzip
+    #             from io import BytesIO
+    #             buf = BytesIO(line)
+    #             f = gzip.GzipFile(fileobj=buf).read()
+    #             print(f)
+    #
+    # # is it a rotated cypher based on the signed/unsigned number?
+    # print_rotated_text(stuff)
+    #
+    # pixels = [convert_to_signed(item) for item in stuff]
+    # # create_luminance_image_from_pixel_values(pixels, scale=(128, 32))
+    # print(max(stuff))
+    # print(min(stuff))
+    # for index, item in enumerate(stuff):
+    #     if max(stuff) == item:
+    #         print(index, item)
+    # create_luminance_image_from_pixel_values(stuff, scale=(20, 210))
+    #
+    #
